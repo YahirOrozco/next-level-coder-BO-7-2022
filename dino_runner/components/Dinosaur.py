@@ -3,53 +3,23 @@ import os
 import random
 
 from pygame.sprite import Sprite
-from utils import constants
+from utils.constants import RUNNING
 
 class Dinosaur(Sprite):
     def __init__(self):
         #Initializing dino constants
-        #Running constants
-        self.run_img = constants.RUNNING[0]
-        self.rshiel_img = constants.RUNNING_SHIELD
-        self.rhammer_img = constants.RUNNING_HAMMER
-        #Jump constants
-        self.jump_img = constants.JUMPING
-        self.j_shield_img = constants.JUMPING_SHIELD
-        self.j_hammer = constants.JUMPING_HAMMER
-        #Duck constants
-        self.duck_img = constants.DUCKING
-        self.d_hammer = constants.DUCKING_HAMMER
-        self.d_shield = constants.DUCKING_SHIELD
-        #Events
-        self.dino_duck = False
-        self.dino_run = True
-        self.dino_jump = False
-
-        self.spet_index = 0 #Initializing the steps to 0 
-        self.jump_vel = self.JUMP_VEL
-        self.image = self.run_img[0]
+        self.image = RUNNING[0]
         self.dino_rect = self.image.get_rect()
-        self.dino_rect.x = self.X_POS
-        self.dino_rect.y = self.Y_POS
-
+        self.dino_rect_x = 80
+        self.dino_rect_y = 310
+       
     def update(self, userInput):
         #update of dino
-        if self.dino_duck:
-            self.duck()
-        if self.dino_run:
-            self.run()
-        if self.dino_jump():
-            self.jump
-        
-        #update of steaps
-        if self.step_index >= 10:
-            self.step_index = 0
-        
-        #Getting input value of user
+        pass
 
 
     def duck():
         pass   
 
     def draw(self, screen):
-        screen.blit
+        screen.blit(self.image, self.dino_rect)

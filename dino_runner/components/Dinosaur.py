@@ -1,13 +1,15 @@
 import pygame
 import os
 import random
+
+from pygame.sprite import Sprite
 from utils import constants
 
-class Dinosaur():
+class Dinosaur(Sprite):
     def __init__(self):
         #Initializing dino constants
         #Running constants
-        self.run_img = constants.RUNNING
+        self.run_img = constants.RUNNING[0]
         self.rshiel_img = constants.RUNNING_SHIELD
         self.rhammer_img = constants.RUNNING_HAMMER
         #Jump constants
@@ -44,7 +46,10 @@ class Dinosaur():
             self.step_index = 0
         
         #Getting input value of user
-        
 
-    def draw():
-        pass
+
+    def duck():
+        pass   
+
+    def draw(self, screen):
+        screen.blit

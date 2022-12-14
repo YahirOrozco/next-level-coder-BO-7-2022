@@ -30,8 +30,21 @@ class Dinosaur():
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
 
-    def update():
-        pass
+    def update(self, userInput):
+        #update of dino
+        if self.dino_duck:
+            self.duck()
+        if self.dino_run:
+            self.run()
+        if self.dino_jump():
+            self.jump
+        
+        #update of steaps
+        if self.step_index >= 10:
+            self.step_index = 0
+        
+        #Getting input value of user
+        
 
     def draw():
         pass

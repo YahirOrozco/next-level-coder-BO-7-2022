@@ -9,9 +9,11 @@ class Game:
         pygame.init()
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(ICON)
+        pygame.mixer.init() #Initializing the sounds
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.playing = False
+        self.sound = False
         self.game_speed = 20
         self.x_pos_bg = 0
         self.y_pos_bg = 380

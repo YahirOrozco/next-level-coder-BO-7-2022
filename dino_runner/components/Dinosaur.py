@@ -79,3 +79,12 @@ class Dinosaur(Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.dino_rect)
+
+    def sound(self, game):
+        sound_jump = pygame.mixer.Sound("dino_runner/utils/sounds/Jump.mp3")
+        sound_duck = pygame.mixer.Sound("dino_runner/utils/sounds/Duck.mp3")
+        if self.dino_jump:
+            pygame.mixer.Sound.play(sound_jump)
+        
+        if self.dino_duck:
+            pygame.mixer.Sound.play(sound_duck)

@@ -1,10 +1,12 @@
 import random
 from dino_runner.components.obstacles.obstacle import Obstacle
 
+
 class Bird(Obstacle):
-    BIRD_HEIGHTS = [250, 290, 320]
+    BIRD_HEIGHTS = [80, 270]
 
     def __init__(self, image):
+        self.step_index = 0
         self.type = random.randint(0, 2)
         super().__init__(image, self.type)
         self.rect.y = random.choice(self.BIRD_HEIGHTS)
@@ -15,8 +17,7 @@ class Bird(Obstacle):
         aux_x = self.rect.x
         aux_y = self.rect.y
         self.step_index += 1
-
-        self.rect = self.image[self,type].get_rect()
+        self.rect = self.image[self.type].get_rect()
         self.rect.x = aux_x
         self.rect.y = aux_y
         self.step_index += 1

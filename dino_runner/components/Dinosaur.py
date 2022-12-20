@@ -6,7 +6,10 @@ from pygame.sprite import Sprite
 from dino_runner.utils.constants import (
     RUNNING, DUCKING, JUMPING, 
     RUNNING_SHIELD, DUCKING_SHIELD, JUMPING_SHIELD,
-    DEFAULT_TYPE, SHIELD_TYPE)
+    DEFAULT_TYPE, SHIELD_TYPE, SWORD_TYPE, HAMMER_TYPE,
+    DUCKING_HAMMER, RUNNING_HAMMER, JUMPING_HAMMER,
+    DUCKING_SWORD, RUNNING_SWORD, JUMPING_SWORD)
+
 
 class Dinosaur(Sprite):
 
@@ -17,9 +20,9 @@ class Dinosaur(Sprite):
 
     def __init__(self):
         #Initializing dino constants
-        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD}
-        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD}
-        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD}
+        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE: DUCKING_HAMMER, SWORD_TYPE: DUCKING_SWORD}
+        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER, SWORD_TYPE: RUNNING_SWORD}
+        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER, SWORD_TYPE: JUMPING_SWORD}
         self.type = DEFAULT_TYPE
         self.image = RUNNING[0]
         self.dino_rect = self.image.get_rect()
@@ -31,27 +34,39 @@ class Dinosaur(Sprite):
         self.dino_duck = False
         self.dino_jump = False
         self.jump_vel = self.JUMP_VEL
+        self.setup_state()
 
+        #Initializing dino sounds
+        self.sonidoJump = pygame.mixer.Sound("dino_runner/utils/sounds/Boink.mp3")
+        self.sonidoDuck = pygame.mixer.Sound("dino_runner/utils/sounds/Duck.mp3")
+        
     def setup_state(self):
         self.has_power_up = False
         self.shield = False
         self.shield_time_up = 0
+        self.sword = False
+        self.sword_time_up = 0
+        self.hammer = False
+        self.hammer_time_up = 0
        
     def update(self, user_input):
        
         if self.dino_jump:
+            self.sonidoJump.play(0)
             self.jump()
         if self.dino_duck:
+            self.sonidoDuck.play(0)
             self.duck()
         else:
             if self.dino_run:
                 self.run()
 
-        #Event of duck 
+        #Event of dinosaur
         if user_input[pygame.K_DOWN]and not self.dino_jump:
             self.dino_run = False
             self.dino_duck = True
             self.dino_jump = False
+            
         elif user_input[pygame.K_UP] and not self.dino_jump: #Event of jump
             self.dino_run = False
             self.dino_duck = False
@@ -80,7 +95,7 @@ class Dinosaur(Sprite):
         self.step_index +=  1 
 
     def jump(self):
-        self.image = self.jump_img[self.type][self.type]
+        self.image = self.jump_img[self.type]
         if self.dino_jump:
             self.dino_rect.y -= self.jump_vel * 4 #Salto
             self.jump_vel -= 0.8 #Se baja la velocidad 
@@ -92,22 +107,29 @@ class Dinosaur(Sprite):
     def draw(self, screen):
         screen.blit(self.image, self.dino_rect)
 
+    def check_hammer(self):
+        if self.hammer:
+            time_to_show = round((self.hammer_time_up - pygame.time.get_ticks()) / 1000, 2)
+            if not time_to_show >= 0:
+                self.hammer = False
+                self.update_to_default(HAMMER_TYPE)
+
+    def check_sword(self):
+        if self.sword:
+            time_to_show = round((self.sword_time_up - pygame.time.get_ticks())/ 1000, 2)
+            if not time_to_show >= 0:
+                self.sword = False
+                self.update_to_default(SWORD_TYPE)
+
     def check_invincibility(self):
         if self.shield:
-            time_to_show = round((self.shield_time_up = pygame.time.get_ticks()) / 1000, 2)
+            time_to_show = round((self.shield_time_up - pygame.time.get_ticks()) / 1000, 2)
             if not time_to_show >= 0:
                 self.shield = False
                 self.update_to_default(SHIELD_TYPE)
     
-    def update_(self, current_type):
+    def update_to_default(self, current_type):
         if self.type == current_type:
             self.type = DEFAULT_TYPE
 
-    def sound(self, game):
-        sound_jump = pygame.mixer.Sound("dino_runner/utils/sounds/Jump.mp3")
-        sound_duck = pygame.mixer.Sound("dino_runner/utils/sounds/Duck.mp3")
-        if self.dino_jump:
-            pygame.mixer.Sound.play(sound_jump)
-        
-        if self.dino_duck:
-            pygame.mixer.Sound.play(sound_duck)
+    
